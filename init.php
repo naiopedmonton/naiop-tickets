@@ -1,23 +1,14 @@
 <?php
-/**
- * My Tickets, Accessible ticket sales for WordPress
- *
- * @package     My Tickets
- * @author      Joe Dolson
- * @copyright   2014-2023 Joe Dolson
- * @license     GPL-2.0+
- *
- * @wordpress-plugin
- * Plugin Name: My Tickets
- * Plugin URI:  http://www.joedolson.com/my-tickets/
- * Description: Sell Tickets and take registrations for your events. Integrates with My Calendar.
- * Author:      Joseph C Dolson
- * Author URI:  http://www.joedolson.com
- * Text Domain: my-tickets
+/*
+ * Plugin Name: NAIOP Tickets
+ * Author: NAIOP
+ * Description: Ticketing for NAIOP
+ * Version: 1.1.2
+ * Plugin URI: https://github.com/naiopedmonton/naiop-tickets
+ * GitHub Plugin URI: https://github.com/naiopedmonton/naiop-tickets
+ * Text Domain: naiop-tickets
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/license/gpl-2.0.txt
- * Domain Path: lang
- * Version:     2.0-beta1
  */
 
 /*
@@ -43,6 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require __DIR__ . '/src/my-tickets.php';
+require __DIR__ . '/src/naiop-tickets.php';
 
 register_activation_hook( __FILE__, 'mt_activation' );
 register_deactivation_hook( __FILE__, 'mt_plugin_deactivated' );

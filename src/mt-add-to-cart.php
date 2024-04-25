@@ -184,6 +184,7 @@ function mt_add_to_cart_form( $content, $event = false, $view = 'calendar', $tim
 					$total_order = 0;
 					foreach ( $pricing as $type => $ticket_type ) {
 						$row = mt_ticket_row( $event_id, $registration, $ticket_type, $type, $available, $tickets_remaining );
+						$row = apply_filters('naiop_ticket_row', $row, $type);
 						if ( $row ) {
 							$form           .= $row['form'];
 							$handling_notice = $row['handling'];
