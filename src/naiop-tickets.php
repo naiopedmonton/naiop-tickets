@@ -7,6 +7,11 @@
  * 
  */
 
+ add_filter('naiop_tickets_name', 'naiop_tickets_name');
+ function naiop_tickets_name($object) {
+	 return "NAIOP Tickets";
+ }
+
 /*add_filter( 'mt_add_to_cart_input', 'add_to_cart_input', 10, 8 );
 function add_to_cart_input($html, $input_type, $type, $value, $attributes, $unknown, $remaining, $available) {
 	if ( $type === 'complimentary' ) {

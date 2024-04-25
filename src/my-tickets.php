@@ -319,7 +319,8 @@ function my_tickets_menu() {
 	 */
 	$permission = apply_filters( 'mt_registration_permissions', 'manage_options' );
 	if ( function_exists( 'add_menu_page' ) ) {
-		add_menu_page( __( 'My Tickets', 'my-tickets' ), __( 'My Tickets', 'my-tickets' ), $permission, 'my-tickets', 'mt_settings', $icon_path . '/tickets.png' );
+		$newName = apply_filters( 'naiop_tickets_name', 'My Calendar' );
+		add_menu_page( $newName, $newName, $permission, 'my-tickets', 'mt_settings', $icon_path . '/tickets.png' );
 	}
 	add_action( 'admin_head', 'mt_reg_styles' );
 	add_submenu_page( 'my-tickets', __( 'My Tickets', 'my-tickets' ), __( 'Settings', 'my-tickets' ), $permission, 'my-tickets', 'mt_settings' );
