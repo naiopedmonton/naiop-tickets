@@ -1,0 +1,37 @@
+{
+    "name": "joedolson/my-tickets",
+    "description": "My Tickets WordPress Plugin",
+    "keywords": ["wordpress", "plugin", "tickets", "events"],
+    "homepage": "https://joedolson.com",
+    "license": "GPL-3.0-or-later",
+    "authors": [{
+        "name": "Joe Dolson",
+        "email": "plugins@joedolson.com",
+        "homepage": "https://joedolson.com"
+    }],
+    "type": "wordpress-plugin",
+    "require-dev": {
+        "phpcompatibility/php-compatibility": "^9.3",
+        "phpunit/phpunit": "^8.5",
+        "wp-coding-standards/wpcs": "^3.0.0",
+        "wp-phpunit/wp-phpunit": "^5.8",
+        "yoast/phpunit-polyfills": "^1.0",
+        "szepeviktor/phpstan-wordpress": "^1.1",
+        "phpstan/extension-installer": "^1.1"
+    },
+    "require": {
+        "composer/installers": "~1.0"
+    },
+    "scripts": {
+        "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
+        "lint": "phpcs --standard=phpcs.xml.dist",
+        "test": "phpunit -c phpunit.xml.dist --verbose"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "phpstan/extension-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

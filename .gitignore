@@ -1,0 +1,16 @@
+# JetBrains
+.idea
+src/.idea/workspace.xml
+src/todo.txt
+src/todo.txt
+src/.idea/php.xml
+src/.idea/workspace.xml
+src/.idea/php.xml
+src/.idea/workspace.xml
+src/todo.txt
+src/.idea/php.xml
+src/.idea/workspace.xml
+/vendor/
+/node_modules/
+.vscode/launch.json
+.husky/

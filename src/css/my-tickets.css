@@ -1,0 +1,432 @@
+.my-tickets .postbox {
+    margin: 10px 10px 0 0
+}
+
+.my-tickets .postbox h2.hndle {
+	cursor: text;
+}
+
+.my-tickets .postbox .inside {
+    overflow: visible !important
+}
+
+.mt-new-variable {
+	display: flex;
+	gap: 12px;
+}
+
+.admin-tickets li .controls {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	align-items: center;
+	column-gap: 5px;
+}
+
+.duet-date__table .duet-date__cell {
+	padding: 0;
+}
+
+td duet-date-picker .duet-date:not(:last-of-type) {
+	display: none;
+}
+
+.mt-move-tickets {
+	position: relative;
+	display: none;
+	margin-bottom: 24px;
+}
+
+.mt-date-time-picker {
+	display: flex;
+}
+
+.wrap .admin-tickets .mt-ticket-moved-response {
+	padding: 12px;
+	margin: 12px -12px 12px;
+	font-weight: 700;
+	border: 0;
+}
+
+.mt-move-tickets-wrapper .mt-delete-ticket-button .dashicons {
+	vertical-align: text-top;
+	margin-top: -1px;
+}
+
+.mt-move-tickets-wrapper .mt-delete-ticket-button:focus,
+.mt-move-tickets-wrapper .mt-delete-ticket-button:hover {
+	background-color: #8a2424;
+	border-color: #8a2424;
+	color: #fff;
+}
+
+.mt-ticket-moved-response.error {
+	background-color: #8a2424;
+	color: #fff;
+}
+
+.mt-ticket-moved-response.success {
+	background-color: #007017;
+	color: #fff;
+}
+
+.mt-move-tickets-inner {
+	margin-bottom: .25em;
+}
+
+.mt-move-tickets-inner button {
+	height: 1.2rem;
+}
+
+.mt-pricing tr.fade {
+    background: #ff9;
+    transition: background .5s ease-in-out;
+}
+
+.mt-debug-details {
+    display: none;
+}
+
+.mt-pricing tr.fade:hover {
+    background: #ffe;
+}
+
+.mt-trigger-container {
+    padding: .5em;
+    background: #00000007;
+    border-radius: 5px;
+}
+/* some plugins change this, but I need it at WP default. */
+.my-tickets .meta-box-sortables {
+    min-height: 0
+}
+
+.widefat .mt-controls .button {
+    padding: 0 4px;
+    line-height: 1;
+}
+
+.widefat.mt-discounts .delete-code .dashicons {
+    color: #c00;
+}
+
+.widefat.mt-discounts tbody th {
+    vertical-align: top;
+}
+
+legend {
+    font-weight: 700;
+    padding: 0;
+    font-size: 1.1em;
+}
+
+.my-tickets textarea {
+    width: 100%
+}
+
+.my-tickets input {
+    max-width: 100%;
+}
+
+.error.notice .button-secondary {
+    vertical-align: initial;
+}
+
+.jcd-wide {
+    width: 75%;
+}
+
+.jcd-narrow {
+    width: 20%;
+}
+
+.mt-money-format {
+    float: right;
+    margin: 0;
+    padding: .5em;
+    font-size: 1.2em;
+    border-radius: 5px;
+    background: #0000000a;
+}
+
+.mt-tabs {
+    margin-top: 1em;
+}
+
+.mt-tabs .tabs {
+    margin: 0 !important;
+    padding: 0 4px;
+    position: relative;
+    top: 1px;
+}
+
+.mt-tabs .tabs li {
+    display: inline;
+    margin: 0 auto;
+    line-height: 1;
+}
+
+.mt-tabs .tabs a {
+    display: inline-block;
+    padding: 8px 10px;
+    border-radius: 4px 4px 0 0;
+    border: 1px solid #ccc;
+    background: #f3f3f3;
+}
+
+.mt-tabs .tabs a.active {
+    border-bottom: 1px solid #fefefe;
+    background: #fefefe;
+}
+
+.mt-tabs .wptab {
+    background: #fff;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+}
+
+.my-tickets .mt-ticket-data {
+    padding: .5em;
+    border: 1px solid #0000001a;
+}
+
+.mt-load-model {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px;
+}
+
+.mt-load-model button[aria-selected="true"] {
+	outline: 2px solid;
+	outline-offset: 1px;
+}
+
+.my-tickets .checkboxes {
+    margin: 0;
+}
+
+.my-tickets .checkboxes li {
+    display: inline-block;
+    padding: 5px;
+    background: rgba(0, 0, 0, .05);
+    margin: 2px;
+}
+
+.my-tickets .checkboxes li:hover {
+    background: #fff;
+}
+
+.my-tickets dd {
+	margin-bottom: 1.5rem;
+}
+
+.my-tickets .mt-flex {
+	display: flex;
+	gap: 20px;
+	flex-wrap: wrap;
+	align-items: start;
+}
+
+.my-tickets dt {
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.inside span.current {
+    padding: 2px;
+    background: #f3f3f3;
+}
+
+.inside .mt-logo {
+    width: 50%;
+    display: block;
+    margin: 0 auto 1em;
+}
+
+.ticket-sale-types {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 20px;
+}
+
+.mt-report-selector > div {
+    max-width: 48%;
+}
+
+.mt-report-selector:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.report-by-date {
+    float: left;
+}
+
+.report-by-event {
+    float: right;
+}
+
+#mt_subject, #mt_email {
+    width: 100%;
+}
+
+.my-tickets dt {
+    font-weight: 700;
+}
+
+.mt-help li {
+    list-style-type: disc;
+    margin-left: 2em;
+}
+
+.mt-support-me {
+    margin-top: 0;
+}
+
+.mt-support-me p {
+    font-size: 1.6em;
+    font-weight: 600;
+    background: #007eb3;
+    text-shadow: 1px 1px rgb( 35, 60, 127 );
+    padding: 1em;
+    text-align: center;
+    margin: 0 0 1em;
+}
+
+.mt-support-me p, .mt-support-me a {
+    color: #fff;
+}
+
+.mt-support-me a:hover, .mt-support-me a:focus {
+    text-decoration: none;
+}
+
+.mt-owed {
+    font-size: 1.5em;
+    font-weight: 700;
+    text-align: center;
+    margin: .5em 0;
+    padding: .5em;
+    background: rgba( 255, 255, 70, .3 );
+}
+
+.mt_post_fields .mt-field {
+    margin-bottom: 1em;
+}
+
+.mt_post_fields .mt-field span {
+    font-style: italic;
+}
+
+.widefat th[scope=row].mt-id {
+    font-family: monospace;
+    width: 11em;
+}
+
+.mt-back, .show-button {
+    display: none;
+}
+
+.sales {
+    background: #e25822;
+    color: #fff;
+    text-shadow: 1px 0 0 #000;
+}
+
+@media (max-width: 782px) {
+    .jcd-narrow {
+        width: 100%;
+    }
+
+    .jcd-wide {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .mt-report-selector > div {
+        max-width: 100%;
+        float: none;
+        margin: 1em 0;
+    }
+}
+
+
+/* Responsive tables */
+@media screen and ( max-width: 720px ) {
+    table.mt-pricing,
+    table.mt-pricing thead,
+    table.mt-pricing tbody,
+    table.mt-pricing tr,
+    table.mt-pricing td,
+    table.mt-pricing caption {
+        display: block;
+        height: auto;
+        min-height: 0;
+        border: none;
+    }
+
+    table.mt-pricing thead,
+    table.mt-pricing tbody,
+    table.mt-pricing caption  {
+        width: 100%;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    table.mt-pricing caption {
+        font-weight: 700;
+    }
+
+    table.mt-pricing tr {
+        margin: 1em 0;
+        padding-bottom: 1em;
+        border-bottom: 1px solid #c3c4c7;
+        display: flex;
+        align-items: end;
+        flex-wrap: wrap;
+    }
+
+    table.mt-pricing .mt-controls  .button {
+        margin-bottom: 0;
+    }
+
+    table.mt-pricing tr td:before {
+        display: block;
+    }
+
+    table.mt-pricing tr td:nth-of-type(2):before {
+        content: 'Ticket Type';
+    }
+
+    table.mt-pricing tr td:nth-of-type(3):before {
+        content: 'Price';
+    }
+
+    table.mt-pricing tr td:nth-of-type(4):before {
+        content: 'Available';
+    }
+
+    table.mt-pricing tr td:nth-of-type(6):before {
+        content: 'Close Date';
+    }
+
+    table.mt-pricing td {
+        padding: 4px;
+    }
+
+    table.mt-pricing th {
+        border: 0;
+        clip: rect(1px, 1px, 1px, 1px);
+        clip-path: inset(50%);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute !important;
+        width: 1px;
+        word-wrap: normal !important;
+    }
+}

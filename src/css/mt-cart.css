@@ -1,0 +1,491 @@
+.mt_cart_total, .mt_cart_label, .mt_ticket_handling {
+    text-align: right;
+    padding: .25em 0;
+}
+
+.mt_cart_handling {
+	padding: .5rem;
+}
+
+.mt-expiration-notice {
+	padding: 1rem;
+	display: flex;
+	gap: 12px;
+	margin-bottom: 1rem;
+	background: var(--mt-message-bg);
+	color: var(--mt-text-color);
+}
+
+.mt-extend-button {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.mt-expiration-notice p {
+	padding: 0;
+	margin: 0;
+}
+
+.mt-order input,
+.mt_cart button,
+.mt_cart select,
+.mt_cart input {
+	padding: 5px;
+}
+
+.mt_cart_total {
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+.mt_cart_label, .mt_ticket_handling {
+    font-size: 1.1em;
+}
+
+.mt-message {
+    background: var(--mt-message-bg);
+    color: var(--mt-message-color);
+    padding: .75em 1em !important;
+    margin-bottom: .5em;
+    font-size: 1.1em;
+    border: 2px solid;
+}
+
+.mt-message.success {
+    border-color: var(--mt-success-border);
+}
+
+.mt-message.error {
+    border-color: var(--mt-error-border);
+}
+
+.mt-payment-button {
+    padding: 1em 0;
+}
+
+.ticket-orders fieldset {
+    margin: 1em 0;
+	padding: 8px;
+	border-radius: 8px;
+	background: var(--mt-order-background);
+	box-shadow: 4px 4px 4px var(--mt-order-shadow);
+	border-width: 1px;
+}
+
+.tickets-remaining.hiding, .hiding .tickets-remaining {
+    display: none;
+}
+
+.ticket-orders legend {
+    font-weight: 700;
+    padding: 2px;
+}
+
+.mt-ticket-field {
+    display: grid;
+    grid-template-columns: 14em 1fr 12em;
+    column-gap: 12px;
+    align-items: start;
+    margin-bottom: .5rem;
+}
+
+.mt-ticket-field .ticket-pricing {
+	display: grid;
+}
+
+.mt-ticket-field span:not(span.dashicons) {
+	font-size: clamp( .875rem, 14px, 1.125rem );
+	text-align: right;
+}
+
+.mt-ticket-field .price {
+	font-weight: 700;
+}
+
+fieldset .mt-ticket-field input:not([type=submit]), fieldset .mt-ticket-field select {
+    margin: 0;
+    margin-bottom: 0;
+	width: 4em;
+}
+
+.mt-ticket-field.mt-price-in-label {
+    grid-template-columns: 9em 1fr;
+}
+
+@media only screen and (max-width:782px) {
+    .mt-ticket-field {
+        grid-template-columns: 1fr;
+        margin-bottom: 1rem;
+    }
+}
+
+.mt_cart caption {
+    font-weight: 700;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+table.mt_cart {
+    width: 100%;
+    margin: 0;
+}
+
+.mt_cart td {
+    vertical-align: middle;
+}
+
+.mt_cart th {
+    line-height: 1.5;
+    font-weight: 700;
+    text-align: center;
+}
+
+.mt_cart th[scope="row"] {
+    text-align: left;
+}
+
+.mt_cart td.mt-order {
+	text-align: end;
+}
+
+.mt_cart th .mt-datetime {
+    font-weight: 400;
+}
+
+.mt-order .mt-response p {
+    padding: .5rem;
+    background-color: #b8e6bf;
+    color: #000;
+	border: 2px solid #005c12;
+}
+
+.mt-order .mt-response p a {
+	color: #0a4b78;
+	background: #f0f6fc;
+	padding: .25rem;
+	border-radius: 3px;
+	border: 2px solid;
+	text-decoration: none;
+}
+
+.mt-order .mt-response p a:hover,
+.mt-order .mt-response p a:focus {
+	background: #0a4b78;
+	color: #f0f6fc;
+}
+
+.mt-processing {
+    display: none;
+}
+
+button[name="mt_add_to_cart"] {
+	display: flex;
+	align-items: center;
+	padding: 4px 8px;
+	gap: 4px;
+	min-height: 32px;
+}
+
+button[name="mt_add_to_cart"] img {
+    width: 16px !important;
+	height: auto;
+}
+
+.mt-payment-form fieldset {
+    margin: 1em 0;
+}
+
+.mt_cart tr.removed {
+    display: none;
+}
+
+.mt_cart .screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute !important;
+    width: 1px;
+    word-wrap: normal !important;
+}
+
+.mt-payment-form legend {
+    font-weight: 700;
+    padding: .5rem 0;
+}
+
+.gateway-selector {
+    padding: 1rem 0;
+}
+
+.gateway-selector ul {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.gateway-selector li {
+    margin: 0 .25rem 0 0 !important;
+    padding: .25rem !important;
+    display: inline-block !important;
+    list-style-type: none !important;
+    background: rgba(0, 0, 0, .075);
+}
+
+.gateway-selector button {
+	all: unset;
+}
+
+.gateway-selector .active {
+    font-weight: 700;
+    background: rgba(0, 0, 0, .001);
+}
+
+.mt_sandbox_enabled {
+    position: relative;
+    background: #fbe6ab;
+    color: #101517;
+    padding: .5em 0;
+    font-size: 1.4em;
+    display: block;
+    border-top: 2px solid #8a2424;
+    width: 100%;
+    text-align: center;
+}
+
+.admin-bar .mt_sandbox_enabled {
+    top: 32px;
+}
+
+.mt_cart label {
+    display: block;
+}
+
+.mt_cart .wp-post-image {
+    float: left;
+    margin-right: .5rem;
+}
+
+.mt-ticket-input {
+	display: flex;
+}
+
+.mt-ticket-input button,
+.mt-update-column button {
+	all: unset;
+    padding: .333em;
+    line-height: 1;
+	border: 1px solid var(--mt-field-border);
+	color: var(--mt-field-color);
+	text-align: center;
+	border-radius: 3px;
+	background: var(--mt-field-background);
+}
+
+.mt-ticket-input button.mt-increment {
+	border-radius: 3px 0 0 3px;
+	margin-left: 2px;
+}
+
+.mt-ticket-input button.mt-decrement {
+	border-radius: 0 3px 3px 0;
+	border-left: none;
+}
+
+.mt_purchase_path {
+    margin-bottom: 1rem;
+}
+
+.mt_purchase_path {
+	display: grid;
+	grid-template-columns: repeat( 3, auto );
+	align-items: center;
+}
+
+.mt_purchase_path span {
+    padding: .5rem;
+    background: rgba( 255, 255, 255, .7 );
+	border-bottom: 4px solid transparent;
+}
+
+.mt_purchase_path .inactive {
+    background: rgba( 0,0,0,.15 );
+}
+
+.mt_purchase_path .active {
+    background: rgba( 0,0,0,.1 );
+	border-bottom: 4px solid;
+}
+
+#x_card_code {
+    width: 4em;
+}
+
+.mt-admin-only {
+    background-color: rgba( 240,240,240,.8 );
+    font-style: italic;
+}
+
+.mt-emails, .mt-names {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: top;
+    column-gap: 20px;
+    margin-bottom: 20px;
+}
+
+.mt-waiting-list-tickets label {
+    display: block;
+}
+
+.mt_submit {
+    margin-top: 20px;
+}
+
+.mt-emails input, .mt-names input {
+    width: 100%;
+}
+
+.mt_email_check {
+    display: block;
+}
+
+.mt_email_check span {
+    font-weight: 700;
+    padding: .33rem;
+    display: none;
+}
+
+.mt_email_check .dashicons, .mt_email_check .dashicons:before {
+    line-height: inherit;
+}
+
+.mt_email_check .ok {
+    color: #f2f2f2;
+    background: var(--mt-success-border);
+}
+
+.mt-shipping-address label {
+    display: block;
+}
+
+.mt_email_check .notemail,
+.mt_email_check .mismatch {
+    color: #f2f2f2;
+    background: var(--mt-error-border);
+}
+
+.mt-update-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 2px;
+}
+
+.mt-response-processing:after {
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+    -webkit-animation: ellipsis steps(4,end) 900ms infinite;
+    animation: ellipsis steps(4,end) 900ms infinite;
+    content: "\2026"; /* ascii code for the ellipsis character */
+    width: 0px;
+}
+
+@keyframes ellipsis {
+    to {
+        width: 20px;
+    }
+}
+
+@-webkit-keyframes ellipsis {
+    to {
+        width: 20px;
+    }
+}
+
+input[name="mt_submit"]:disabled {
+    opacity: .5;
+    cursor: text;
+}
+
+.mt-payment-details {
+    display: none;
+}
+
+.mt-payments {
+    position: relative;
+}
+
+.mt-payment-details {
+    position:absolute;
+    left: 0;
+    width: 100%;
+    background: var(--mt-order-background);
+    color: var(--mt-text-color);
+    padding: 2rem;
+    box-shadow: 3px 3px 3px #ccc;
+}
+
+.mt-payment-details .mt_cart_label {
+    text-align: left;
+}
+
+.mt-payments .mt-payment-details h3 {
+    font-size: 2rem;
+    margin: 1rem 0;
+}
+
+.mt-payments thead tr {
+    border-bottom-width: 4px;
+}
+
+.mt-payments.striped tr:nth-of-type(odd) {
+    background: rgba( 255, 255, 255, .1 );
+}
+
+@media
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+    /* Force table to not be like tables anymore */
+    .mt_cart table, .mt_cart thead, .mt_cart tbody, .mt_cart th, .mt_cart td, .mt_cart tr, .mt_cart caption {
+        display: block;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    .mt_cart thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .mt_cart tr { border: 1px solid #ccc; }
+
+    .mt_cart td, .mt_cart th {
+        border: none;
+        border-bottom: 1px solid var(--mt-order-shadow);
+        position: relative;
+        padding-left: 30% !important;
+    }
+    .mt_cart th:first-child {
+        padding-left: 30% !important;
+    }
+    .mt_cart td:before, .mt_cart th:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 30%;
+        padding-right: 10px;
+        white-space: nowrap;
+    }
+
+    /* Label the data. Override in CSS to change text. */
+    .mt_cart th:nth-of-type(1):before { content: "Event"; }
+    .mt_cart td:nth-of-type(1):before { content: "Order"; }
+    .mt_cart td:nth-of-type(2):before { content: "Update"; }
+}
