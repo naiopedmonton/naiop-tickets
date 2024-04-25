@@ -255,6 +255,8 @@ function mt_add_to_cart_form( $content, $event = false, $view = 'calendar', $tim
 					</fieldset>
 				</form>
 			</div>";
+				//error_log(print_r($options, true));
+				$output = apply_filters('naiop_add_to_cart_output', $output, get_permalink( $options['mt_purchase_page'] ), $event);
 			}
 		}
 	} else {

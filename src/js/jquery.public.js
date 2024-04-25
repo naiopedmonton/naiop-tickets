@@ -253,7 +253,7 @@
 					let data = {
 						'action': mt_ajax.action,
 						'data': post,
-						'function': 'add_to_cart',
+						'function': 'naiop_add_to_cart',
 						'security': mt_ajax.security
 					};
 					$.post(mt_ajax.url, data, function (response) {
