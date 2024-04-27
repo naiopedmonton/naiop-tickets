@@ -29,6 +29,12 @@ function filter_ticket_rows($html, $type) {
 	return $html;
 }
 
+/* don't append to cart page (we'll use WC) */
+add_filter('naiop_add_to_cart_page', 'use_my_tickets_cart', 10, 1);
+function use_my_tickets_cart($use_cart) {
+	return false;
+}
+
 add_filter( 'naiop_add_to_cart_output', 'add_to_cart_output', 10, 3 );
 function add_to_cart_output($html, $checkout_url, $event) {
 	

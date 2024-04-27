@@ -21,11 +21,14 @@ function my_tickets_cart( $content ) {
 	$options = mt_get_settings();
 	$id      = ( '' !== $options['mt_purchase_page'] ) ? $options['mt_purchase_page'] : false;
 	if ( is_main_query() && $id && ( is_single( $id ) || is_page( $id ) ) ) {
-		// by default, any page content is appended after the cart. This can be changed.
-		$content_before = apply_filters( 'mt_content_before_cart', '' );
-		$content_after  = apply_filters( 'mt_content_after_cart', $content );
-		$cart           = mt_generate_cart();
-		$content        = $content_before . $cart . $content_after;
+		$add_cart = apply_filters('naiop_add_to_cart_page', true);
+		if ($add_cart) {
+			// by default, any page content is appended after the cart. This can be changed.
+			$content_before = apply_filters( 'mt_content_before_cart', '' );
+			$content_after  = apply_filters( 'mt_content_after_cart', $content );
+			$cart           = mt_generate_cart();
+			$content        = $content_before . $cart . $content_after;
+		}
 	}
 
 	return $content;
