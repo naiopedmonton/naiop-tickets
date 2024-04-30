@@ -38,6 +38,8 @@ function use_my_tickets_cart($use_cart) {
 add_filter( 'naiop_add_to_cart_output', 'add_to_cart_output', 10, 3 );
 function add_to_cart_output($html, $checkout_url, $event) {
 	
+	return $html;
+
 	$event_product_id = ( is_object( $event ) ) ? $event->event_product : "";
 
 	//$event_product_id = ( is_object( $event ) ) ? $event->event_product : "";

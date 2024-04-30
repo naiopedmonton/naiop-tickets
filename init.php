@@ -1,9 +1,9 @@
 <?php
 /*
  * Plugin Name: NAIOP Tickets
- * Author: NAIOP
+ * Author: Scott Dohei
  * Description: Ticketing for NAIOP
- * Version: 1.2.0
+ * Version: 1.3.0
  * Plugin URI: https://github.com/naiopedmonton/naiop-tickets
  * GitHub Plugin URI: https://github.com/naiopedmonton/naiop-tickets
  * Text Domain: naiop-tickets
