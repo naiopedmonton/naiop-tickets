@@ -158,10 +158,60 @@
 
 		/* Add to Cart form */
 		function mtAddToCart() {
+			function naiopCollectRegistrants(eventTarget, newCount) {
+				let parentField = jQuery(eventTarget).closest(".mt-ticket-field");
+				parentField = parentField.length > 0 ? parentField[0] : null;
+				if (parentField == null) {
+					console.log("couldn't find target parent");
+					return;
+				}
+	
+				let registrationElements = jQuery(parentField).find(".naiop-registration");
+				if (registrationElements.length > newCount) {
+					while (registrationElements.length > newCount) {
+						parentField.removeChild(registrationElements[registrationElements.length-1]);
+						registrationElements = jQuery(parentField).find(".naiop-registration");
+					}
+					//remove the last ones
+				} else if (registrationElements.length < newCount) {
+					while (registrationElements.length < newCount) {
+						//console.log(registrationElements.length, " and ", newCount);
+						// let elementOne = document.createElement("div");
+						// elementOne.setAttribute("class", "naiop-registration-label");
+						// let content = document.createTextNode(registrationElements.length <= 0 ? "Registrations:" : "")
+						// elementOne.appendChild(content);
+			
+						let elementTwo = document.createElement("div");
+						elementTwo.setAttribute("class", "naiop-registration");
+			
+						elementTwo.appendChild(document.createTextNode("Name:"));
+						let nameInput = document.createElement("input");
+						nameInput.setAttribute("required", "");
+						nameInput.setAttribute("type", "input");
+						elementTwo.append(nameInput);
+						
+						elementTwo.appendChild(document.createTextNode("Email:"));
+						let emailInput = document.createElement("input");
+						emailInput.setAttribute("required", "");
+						emailInput.setAttribute("type", "input");
+						elementTwo.append(emailInput);
+			
+						let errorElement = jQuery(parentField).find(".mt-error-notice");
+						errorElement = errorElement.length > 0 ? errorElement[0] : null;
+						if (errorElement != null) {
+							parentField.insertBefore(elementTwo, errorElement);
+						} else {
+							parentField.appendChild(elementTwo);
+						}
+						registrationElements = jQuery(parentField).find(".naiop-registration");
+					}
+				}
+			}
+
 			const addToCart = $( '.mt-order .ticket-orders' );
 
 			$('.mt-error-notice') .hide();
-			addToCart.on('blur', '.tickets-field', function () {
+			addToCart.on('blur', '.tickets_field', function (evt) {
 				let remaining = 0;
 				let purchasing = 0;
 				if ( $(this).val() == '' ) {
@@ -182,10 +232,11 @@
 					$('button[name="mt_add_to_cart"]').addClass('mt-invalid-purchase').attr('disabled', 'disabled');
 				} else {
 					$('button[name="mt_add_to_cart"]').removeClass('mt-invalid-purchase').removeAttr('disabled');
+					naiopCollectRegistrants(evt.currentTarget, purchasing);
 				}
 			});
 			/* Custom ticket count incrementing. */
-			addToCart.on( 'click', '.mt-increment', function() {
+			addToCart.on( 'click', '.mt-increment', function(evt) {
 				let field = $( this ).parent( '.mt-ticket-input' ).find( 'input' );
 				let value = parseInt( field.val() );
 				let max   = parseInt( field.attr( 'max' ) );
@@ -196,11 +247,12 @@
 					field.val( max );
 					newval = max;
 				}
+				naiopCollectRegistrants(evt.currentTarget, newval);
 				newval = newval.toString();
 				wp.a11y.speak( newval, 'assertive' );
 			});
 
-			addToCart.on( 'click', '.mt-decrement', function() {
+			addToCart.on( 'click', '.mt-decrement', function(evt) {
 				let field = $( this ).parent( '.mt-ticket-input' ).find( 'input' );
 				let value = parseInt( field.val() );
 				let min   = parseInt( field.attr( 'min' ) );
@@ -211,6 +263,7 @@
 					field.val( min );
 					newval = min;
 				}
+				naiopCollectRegistrants(evt.currentTarget, newval);
 				newval = newval.toString();
 				wp.a11y.speak( newval, 'assertive' );
 			});

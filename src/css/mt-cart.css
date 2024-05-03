@@ -82,6 +82,18 @@
     padding: 2px;
 }
 
+.naiop-registration {
+    grid-column-end: span 2;
+    grid-column-start: 2;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+.naiop-registration > input {
+    flex-grow: 1;
+}
+
 .mt-ticket-field {
     display: grid;
     grid-template-columns: 1fr 1fr 12em;
