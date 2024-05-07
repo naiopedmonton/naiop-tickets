@@ -7,10 +7,29 @@
  * 
  */
 
- add_filter('naiop_tickets_name', 'naiop_tickets_name');
- function naiop_tickets_name($object) {
-	 return "NAIOP Tickets";
- }
+add_filter('naiop_tickets_name', 'naiop_tickets_name');
+function naiop_tickets_name($object) {
+	return "NAIOP Tickets";
+}
+
+add_filter('mt_settings', 'naiop_save_settings', 10, 2);
+function naiop_save_settings($settings, $post) {
+	if (isset($post['naiop_ticket_cat'])) {
+		$naiop_ticket_cat = (int) $post['naiop_ticket_cat'];
+		$settings['naiop_ticket_cat'] = $naiop_ticket_cat;
+	}
+	return $settings;
+}
+
+add_filter('mt_ticketing_settings_fields', 'naiop_ticketing_settings_fields', 10, 2);
+function naiop_ticketing_settings_fields($html, $options) {
+	$current_product_cat = ( is_numeric( $options['naiop_ticket_cat'] ) ) ? sprintf( __( 'Currently: %1$s (%2$s)', 'my-tickets' ), "<a href='" . get_the_permalink( $options['naiop_ticket_cat'] ) . "'>" . get_the_title( $options['naiop_ticket_cat'] ) . '</a>', get_the_category_by_ID( $options['naiop_ticket_cat'] ) ) : __( 'Not defined', 'my-tickets' );
+
+	$input = '<p><input type="text" size="6" class="suggest" id="naiop_ticket_cat" name="naiop_ticket_cat" value="' . stripslashes( esc_attr( $options['naiop_ticket_cat'] ) ) . '" required aria-required="true" />';
+	$input .= '<label for="naiop_ticket_cat"> ' . __( 'WC Product Category for Tickets', 'my-tickets' );
+	$input .= ' <em class="current">' . wp_kses_post( $current_product_cat ) . '</em></label></p>';
+	return $input;
+}
 
 /*add_filter( 'mt_add_to_cart_input', 'add_to_cart_input', 10, 8 );
 function add_to_cart_input($html, $input_type, $type, $value, $attributes, $unknown, $remaining, $available) {
