@@ -166,13 +166,20 @@
 					return;
 				}
 	
+				let inputNamePrefix = "";
+				let quantityInput = jQuery(parentField).find(".mt-ticket-input input[type='number'][name]");
+				if (quantityInput.length) {
+					inputNamePrefix = quantityInput[0].getAttribute("name");
+				} else {
+					console.log("failed to find a quantity input, cannot construct input prefix");
+				}
+
 				let registrationElements = jQuery(parentField).find(".naiop-registration");
 				if (registrationElements.length > newCount) {
 					while (registrationElements.length > newCount) {
 						parentField.removeChild(registrationElements[registrationElements.length-1]);
 						registrationElements = jQuery(parentField).find(".naiop-registration");
 					}
-					//remove the last ones
 				} else if (registrationElements.length < newCount) {
 					while (registrationElements.length < newCount) {
 						//console.log(registrationElements.length, " and ", newCount);
@@ -180,7 +187,7 @@
 						// elementOne.setAttribute("class", "naiop-registration-label");
 						// let content = document.createTextNode(registrationElements.length <= 0 ? "Registrations:" : "")
 						// elementOne.appendChild(content);
-			
+
 						let elementTwo = document.createElement("div");
 						elementTwo.setAttribute("class", "naiop-registration");
 			
@@ -188,12 +195,14 @@
 						let nameInput = document.createElement("input");
 						nameInput.setAttribute("required", "");
 						nameInput.setAttribute("type", "input");
+						nameInput.setAttribute("name", `${inputNamePrefix}[name]`);
 						elementTwo.append(nameInput);
 						
 						elementTwo.appendChild(document.createTextNode("Email:"));
 						let emailInput = document.createElement("input");
 						emailInput.setAttribute("required", "");
 						emailInput.setAttribute("type", "input");
+						emailInput.setAttribute("name", `${inputNamePrefix}[email]`);
 						elementTwo.append(emailInput);
 			
 						let errorElement = jQuery(parentField).find(".mt-error-notice");
@@ -232,7 +241,7 @@
 					$('button[name="mt_add_to_cart"]').addClass('mt-invalid-purchase').attr('disabled', 'disabled');
 				} else {
 					$('button[name="mt_add_to_cart"]').removeClass('mt-invalid-purchase').removeAttr('disabled');
-					naiopCollectRegistrants(evt.currentTarget, purchasing);
+					//naiopCollectRegistrants(evt.currentTarget, purchasing);
 				}
 			});
 			/* Custom ticket count incrementing. */
@@ -247,7 +256,7 @@
 					field.val( max );
 					newval = max;
 				}
-				naiopCollectRegistrants(evt.currentTarget, newval);
+				//naiopCollectRegistrants(evt.currentTarget, newval);
 				newval = newval.toString();
 				wp.a11y.speak( newval, 'assertive' );
 			});
@@ -263,7 +272,7 @@
 					field.val( min );
 					newval = min;
 				}
-				naiopCollectRegistrants(evt.currentTarget, newval);
+				//naiopCollectRegistrants(evt.currentTarget, newval);
 				newval = newval.toString();
 				wp.a11y.speak( newval, 'assertive' );
 			});
