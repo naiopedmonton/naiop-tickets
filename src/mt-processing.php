@@ -706,6 +706,8 @@ function mt_save_registration_data( $post_id, $post, $data = array(), $event_id 
 		update_post_meta( $post_id, '_mt_hide_registration_form', $hide );
 		update_post_meta( $post_id, '_mt_sell_tickets', $sell );
 		update_post_meta( $post_id, '_mt_event_notes', $notes );
+	} else {
+		apply_filters('naiop_disable_sell', $post_id);
 	}
 }
 

@@ -54,6 +54,12 @@ function use_my_tickets_cart($use_cart) {
 	return false;
 }
 
+/* fix event ticket selling toggle */
+add_filter('naiop_disable_sell', 'toggle_event_selling', 10, 1);
+function toggle_event_selling($post_id) {
+	update_post_meta( $post_id, '_mt_sell_tickets', false );
+}		
+
 add_filter( 'naiop_add_to_cart_output', 'add_to_cart_output', 10, 3 );
 function add_to_cart_output($html, $checkout_url, $event) {
 	
