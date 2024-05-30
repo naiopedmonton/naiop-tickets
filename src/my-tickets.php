@@ -603,6 +603,7 @@ We\'ll see you soon!<br />
 				'tickets' => '',
 				'sold'    => '',
 				'close'   => '',
+				'seats'   => '1',
 			),
 			'senior-student' => array(
 				'label'   => 'Senior/Student',
@@ -610,6 +611,7 @@ We\'ll see you soon!<br />
 				'tickets' => '',
 				'sold'    => '',
 				'close'   => '',
+				'seats'   => '1',
 			),
 			'child'          => array(
 				'label'   => 'Child',
@@ -617,6 +619,7 @@ We\'ll see you soon!<br />
 				'tickets' => '',
 				'sold'    => '',
 				'close'   => '',
+				'seats'   => '1',
 			),
 		),
 		'tickets'         => '120',
@@ -695,6 +698,7 @@ We\'ll see you soon!<br />
 		'mt_ssl'                   => 'false',
 		'mt_gateway'               => array( 'offline' ),
 		'mt_default_gateway'       => 'offline',
+		'naiop_ticket_cat'         => '',
 		'mt_purchase_page'         => '',
 		'mt_receipt_page'          => '',
 		'mt_tickets_page'          => '',

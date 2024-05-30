@@ -474,7 +474,7 @@ function mt_wp_enqueue_scripts() {
 			'mt.tabs',
 			'mtTabs',
 			array(
-				'firstItem' => $firstitem,
+				'firstItem' => apply_filters('naiop_default_ticketing_tab', $firstitem),
 			)
 		);
 	}

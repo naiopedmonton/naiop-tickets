@@ -3,7 +3,7 @@
  * Plugin Name: NAIOP Tickets
  * Author: Scott Dohei
  * Description: Ticketing for NAIOP
- * Version: 1.7.1
+ * Version: 2.0.0
  * Plugin URI: https://github.com/naiopedmonton/naiop-tickets
  * GitHub Plugin URI: https://github.com/naiopedmonton/naiop-tickets
  * Text Domain: naiop-tickets

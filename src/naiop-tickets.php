@@ -133,3 +133,116 @@ function naiop_ajax_handler() {
 add_action( 'wp_ajax_mt_ajax_handler', 'naiop_ajax_handler' );
 add_action( 'wp_ajax_nopriv_mt_ajax_handler', 'naiop_ajax_handler' );
 
+
+/* re-order (and filter?) available ticket models */
+add_filter('naiop_ticket_models', 'naiop_ticket_models', 10, 1);
+function naiop_ticket_models($models) {
+	return array(
+		'continuous' => __( 'Audience Types', 'my-tickets' ),
+		'discrete'   => __( 'Seating Sections', 'my-tickets' ),
+		'event'      => __( 'Event', 'my-tickets' ),
+	);
+}
+
+/* add seats to ticket setup header */
+add_filter('naiop_ticketing_header', 'naiop_ticketing_header', 10, 3);
+function naiop_ticketing_header($header, $counting, $label) {
+	$return    = "<table class='widefat mt-pricing mt-$counting'>
+					<caption>" . __( 'Ticket Prices and Availability', 'my-tickets' ) . "</caption>
+					<thead>
+						<tr>
+							<th scope='col'>" . __( 'Move', 'my-tickets' ) . "</th>
+							<th scope='col' width='20%'>" . $label . "</th>
+							<th scope='col'>" . __( 'Price', 'my-tickets' ) . "</th>
+							<th scope='col'>" . __( 'Seats', 'my-tickets' ) . "</th>
+							<th scope='col'>" . __( 'Available', 'my-tickets' ) . "</th>
+							<th scope='col'>" . __( 'Sold', 'my-tickets' ) . "</th>
+							<th scope='col'>" . __( 'Close Sales', 'my-tickets' ) . '</th>
+						</tr>
+					</thead>
+					<tbody>';
+	return $return;
+}
+
+/* seats input for new price group */
+add_filter('naiop_ticketing_new_price_seats', 'naiop_ticketing_new_price_seats', 10, 2);
+function naiop_ticketing_new_price_seats($pattern, $counting) {
+	if ('discrete' === $counting || 'event' === $counting) {
+		return "<input type='hidden' name='naiop_seats$pattern' id='naiop_seats_" . $counting . "' value='inherit' />1";
+	}
+	return "<input type='text' name='naiop_seats$pattern' id='naiop_seats_" . $counting . "' value='' size='8' />";
+}
+
+/* seats input for existing price group */
+add_filter('naiop_ticket_seats', 'naiop_ticket_seats', 10, 4);
+function naiop_ticket_seats($pattern, $counting, $label, $options) {
+	if ('discrete' === $counting || 'event' === $counting) {
+		return "<input type='hidden' name='naiop_seats$pattern' step='1' id='naiop_seats_$counting" . '_' . "$label' value='1' size='4' />1";
+	}
+	$seats = isset($options['seats']) ? $options['seats'] : "0";
+	return "<input type='number' name='naiop_seats$pattern' step='1' id='naiop_seats_$counting" . '_' . "$label' value='" . esc_attr($seats) . "' size='4' />";
+}
+
+/* default to continous ticketing */
+add_filter('naiop_default_ticketing_tab', 'naiop_default_ticketing_tab', 10, 1);
+function naiop_default_ticketing_tab($default) {
+	return "continuous";
+}
+
+add_filter('naiop_total_tickets_label', 'naiop_total_tickets_label', 10, 1);
+function naiop_total_tickets_label($default) {
+	return "Total Seats Available";
+}
+
+/* save ticketing (with seats) */
+add_filter('naiop_setup_pricing', 'naiop_setup_pricing', 10, 5);
+function naiop_setup_pricing($pricing_array, $post, $model, $sold = array(), $times = array()) {
+	if (!is_null($model)) { //ticket settings
+		$labels         = ( isset( $post['mt_label'][ $model ] ) ) ? $post['mt_label'][ $model ] : array();
+		$prices         = ( isset( $post['mt_price'][ $model ] ) ) ? $post['mt_price'][ $model ] : array();
+		$seats          = ( isset( $post['naiop_seats'][ $model ] ) ) ? $post['naiop_seats'][ $model ] : array();
+		$close          = ( isset( $post['mt_close'][ $model ] ) ) ? $post['mt_close'][ $model ] : array();
+		$availability   = ( isset( $post['mt_tickets'][ $model ] ) ) ? $post['mt_tickets'][ $model ] : array();
+	} else { //event-ticketing form
+		$labels         = ( isset( $post['mt_label'] ) ) ? $post['mt_label'] : array();
+		$prices         = ( isset( $post['mt_price'] ) ) ? $post['mt_price'] : array();
+		$seats          = ( isset( $post['naiop_seats'] ) ) ? $post['naiop_seats'] : array();
+		$close          = ( isset( $post['mt_close'] ) ) ? $post['mt_close'] : array();
+		$availability   = ( isset( $post['mt_tickets'] ) ) ? $post['mt_tickets'] : array();
+	}
+
+	$return = array();
+	if ( is_array( $labels ) ) {
+		$i = 0;
+		foreach ( $labels as $key => $label ) {
+			if ( $label ) {
+				$label          = ( isset( $times[ $key ] ) ) ? $label . ' ' . $times[ $key ] : $label;
+				$internal_label = sanitize_title( $label );
+				$price          = ( is_numeric( $prices[ $i ] ) ) ? $prices[ $i ] : (int) $prices[ $i ];
+				if ( isset( $seats[ $i ] ) && '' !== $seats[ $i ] ) {
+					$seat_count = ( is_numeric( $seats[ $i ] ) ) ? $seats[ $i ] : (int) $seats[ $i ];
+				} else {
+					$seat_count = 1;
+				}
+				if ( isset( $availability[ $i ] ) && '' !== $availability[ $i ] ) {
+					$tickets = ( is_numeric( $availability[ $i ] ) ) ? $availability[ $i ] : (int) $availability[ $i ];
+				} else {
+					$tickets = '';
+				}
+				$sold_tickets              = ( isset( $sold[ $i ] ) ) ? (int) $sold[ $i ] : '';
+				$closing                   = ( isset( $close[ $i ] ) ) ? strtotime( $close[ $i ] ) : '';
+				$return[ $internal_label ] = array(
+					'label'   => esc_html( $label ),
+					'price'   => $price,
+					'seats'   => $seat_count,
+					'tickets' => $tickets,
+					'sold'    => $sold_tickets,
+					'close'   => $closing,
+				);
+			}
+			++$i;
+		}
+	}
+	return $return;
+}
+
