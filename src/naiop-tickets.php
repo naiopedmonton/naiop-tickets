@@ -60,6 +60,11 @@ function toggle_event_selling($post_id) {
 	update_post_meta( $post_id, '_mt_sell_tickets', 'false' );
 }		
 
+add_filter( 'mt_tickets_remaining_continuous_text', 'naiop_add_to_cart_remaining_notice', 10, 1 );
+function naiop_add_to_cart_remaining_notice($notice) {
+	return "%s seats remaining.";
+}
+
 add_filter( 'naiop_add_to_cart_output', 'add_to_cart_output', 10, 3 );
 function add_to_cart_output($html, $checkout_url, $event) {
 	
@@ -164,23 +169,33 @@ function naiop_ticketing_header($header, $counting, $label) {
 	return $return;
 }
 
-/* seats input for new price group */
-add_filter('naiop_ticketing_new_price_seats', 'naiop_ticketing_new_price_seats', 10, 2);
-function naiop_ticketing_new_price_seats($pattern, $counting) {
+/* custom fields on new price group */
+add_filter('naiop_ticketing_new_price_custom_fields', 'naiop_ticketing_new_price_fields', 10, 2);
+function naiop_ticketing_new_price_fields($pattern, $counting) {
+	// insert hidden product_id
+	$return = "<input type='hidden' name='naiop_product_id$pattern' id='naiop_product_id_" . $counting . "' value='' />";
+
 	if ('discrete' === $counting || 'event' === $counting) {
-		return "<input type='hidden' name='naiop_seats$pattern' id='naiop_seats_" . $counting . "' value='inherit' />1";
+		$return .= "<input type='hidden' name='naiop_seats$pattern' id='naiop_seats_" . $counting . "' value='inherit' />1";
+		return $return;
 	}
-	return "<input type='text' name='naiop_seats$pattern' id='naiop_seats_" . $counting . "' value='' size='8' />";
+	$return .= "<input type='text' name='naiop_seats$pattern' id='naiop_seats_" . $counting . "' value='' size='8' />";
+	return $return;
 }
 
-/* seats input for existing price group */
-add_filter('naiop_ticket_seats', 'naiop_ticket_seats', 10, 4);
-function naiop_ticket_seats($pattern, $counting, $label, $options) {
+/* custom fields for existing price group */
+add_filter('naiop_ticket_custom_fields', 'naiop_ticket_custom_fields', 10, 4);
+function naiop_ticket_custom_fields($pattern, $counting, $label, $options) {
+	$pid = isset($options['product_id']) ? $options['product_id'] : "";
+	$return = "<input type='hidden' name='naiop_product_id$pattern' id='naiop_product_id_$counting" . '_' . "$label' value='" . esc_attr($pid) . "' />";
+
 	if ('discrete' === $counting || 'event' === $counting) {
-		return "<input type='hidden' name='naiop_seats$pattern' step='1' id='naiop_seats_$counting" . '_' . "$label' value='1' size='4' />1";
+		$return .= "<input type='hidden' name='naiop_seats$pattern' step='1' id='naiop_seats_$counting" . '_' . "$label' value='1' size='4' />1";
+		return $return;
 	}
 	$seats = isset($options['seats']) ? $options['seats'] : "0";
-	return "<input type='number' name='naiop_seats$pattern' step='1' id='naiop_seats_$counting" . '_' . "$label' value='" . esc_attr($seats) . "' size='4' />";
+	$return .= "<input type='number' name='naiop_seats$pattern' step='1' id='naiop_seats_$counting" . '_' . "$label' value='" . esc_attr($seats) . "' size='4' />";
+	return $return;
 }
 
 /* default to continous ticketing */
@@ -195,20 +210,39 @@ function naiop_total_tickets_label($default) {
 }
 
 /* save ticketing (with seats) */
-add_filter('naiop_setup_pricing', 'naiop_setup_pricing', 10, 5);
-function naiop_setup_pricing($pricing_array, $post, $model, $sold = array(), $times = array()) {
+add_filter('naiop_setup_pricing', 'naiop_setup_pricing', 10, 6);
+function naiop_setup_pricing($post_id, $pricing_array, $post, $model, $sold = array(), $times = array()) {
 	if (!is_null($model)) { //ticket settings
 		$labels         = ( isset( $post['mt_label'][ $model ] ) ) ? $post['mt_label'][ $model ] : array();
 		$prices         = ( isset( $post['mt_price'][ $model ] ) ) ? $post['mt_price'][ $model ] : array();
 		$seats          = ( isset( $post['naiop_seats'][ $model ] ) ) ? $post['naiop_seats'][ $model ] : array();
+		$product_id     = ( isset( $post['naiop_product_id'] ) ) ? $post['naiop_product_id'][ $model ] : array();
 		$close          = ( isset( $post['mt_close'][ $model ] ) ) ? $post['mt_close'][ $model ] : array();
 		$availability   = ( isset( $post['mt_tickets'][ $model ] ) ) ? $post['mt_tickets'][ $model ] : array();
 	} else { //event-ticketing form
 		$labels         = ( isset( $post['mt_label'] ) ) ? $post['mt_label'] : array();
 		$prices         = ( isset( $post['mt_price'] ) ) ? $post['mt_price'] : array();
 		$seats          = ( isset( $post['naiop_seats'] ) ) ? $post['naiop_seats'] : array();
+		$product_ids    = ( isset( $post['naiop_product_id'] ) ) ? $post['naiop_product_id'] : array();
 		$close          = ( isset( $post['mt_close'] ) ) ? $post['mt_close'] : array();
 		$availability   = ( isset( $post['mt_tickets'] ) ) ? $post['mt_tickets'] : array();
+	}
+	$event_title = ( ( isset($post['event_title']) && $post['event_title'] !== '' ) ) ? $post['event_title'] : "Unknown";
+	$event_desc = ( ( isset($post['content']) ) ) ? $post['content'] : "";
+	$event_excerpt = ( ( isset($post['event_short']) ) ) ? $post['event_short'] : "";
+	$attachment_id = ( ( isset($post['event_image_id']) ) ) ? (int) $post['event_image_id'] : false;
+
+	// initally all products are candidates for deletion
+	$product_to_delete = array();
+	if ( $post_id ) {
+		$old_registration = get_post_meta( $post_id, '_mt_registration_options', true );
+		if ( isset( $old_registration['prices'] ) ) {
+			foreach ( $old_registration['prices'] as $key => $price_data ) {
+				if ( is_numeric( $price_data['product_id'] ) ) {
+					array_push($product_to_delete, (int) $price_data['product_id']);
+				}
+			}
+		}
 	}
 
 	$return = array();
@@ -219,22 +253,62 @@ function naiop_setup_pricing($pricing_array, $post, $model, $sold = array(), $ti
 				$label          = ( isset( $times[ $key ] ) ) ? $label . ' ' . $times[ $key ] : $label;
 				$internal_label = sanitize_title( $label );
 				$price          = ( is_numeric( $prices[ $i ] ) ) ? $prices[ $i ] : (int) $prices[ $i ];
+				$product_id     = ( isset( $product_ids[ $i ] ) ) ? $product_ids[ $i ] : '';
 				if ( isset( $seats[ $i ] ) && '' !== $seats[ $i ] ) {
 					$seat_count = ( is_numeric( $seats[ $i ] ) ) ? $seats[ $i ] : (int) $seats[ $i ];
 				} else {
 					$seat_count = 1;
 				}
+				$product_name   = $event_title . ": " . $label;
+				$product_name   .= ( ( $seat_count > 1 ) ? ( " (seats " . $seat_count . ")" ) : "" );
 				if ( isset( $availability[ $i ] ) && '' !== $availability[ $i ] ) {
 					$tickets = ( is_numeric( $availability[ $i ] ) ) ? $availability[ $i ] : (int) $availability[ $i ];
 				} else {
 					$tickets = '';
 				}
+
+				// empty $product_id -> create a new Product
+				if ( $product_id === '' && $label !== 'Complimentary') {
+					$product = new WC_Product_Simple();
+					$product->set_name($product_name);
+					$product->set_description($event_desc);
+					$product->set_short_description($event_excerpt);
+					$product->set_catalog_visibility('hidden');
+					$product->set_regular_price($price);
+					if ($attachment_id) {
+						$product->set_image_id($attachment_id);
+					}
+					$product->save();
+					$product_id = $product->get_id();
+				} else if ( $product_id !== '' ) { // existing product
+					$product = wc_get_product($product_id);
+					if ($product) {
+						if ( ($index = array_search($product->get_id(), $product_to_delete)) !== false ) {
+							unset($product_to_delete[$index]); // mark the product as being used
+						}
+						$product->set_name($product_name);
+						$product->set_description($event_desc);
+						$product->set_short_description($event_excerpt);
+						$product->set_catalog_visibility('hidden');
+						$product->set_regular_price($price);
+						if ($attachment_id) {
+							$product->set_image_id($attachment_id);
+						}
+						$product->save();
+					} else {
+						// TODO: create a new Product?
+						error_log("Failed to find Product for POST value: " . $product_id);
+						$product_id = "";
+					}
+				}
+
 				$sold_tickets              = ( isset( $sold[ $i ] ) ) ? (int) $sold[ $i ] : '';
 				$closing                   = ( isset( $close[ $i ] ) ) ? strtotime( $close[ $i ] ) : '';
 				$return[ $internal_label ] = array(
 					'label'   => esc_html( $label ),
 					'price'   => $price,
 					'seats'   => $seat_count,
+					'product_id' => $product_id,
 					'tickets' => $tickets,
 					'sold'    => $sold_tickets,
 					'close'   => $closing,
@@ -243,6 +317,8 @@ function naiop_setup_pricing($pricing_array, $post, $model, $sold = array(), $ti
 			++$i;
 		}
 	}
+	error_log("TODO delete orphaned products: " . print_r($product_to_delete, true));
+
 	return $return;
 }
 

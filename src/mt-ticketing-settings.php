@@ -54,7 +54,7 @@ function mt_update_ticketing_settings( $post ) {
 			$close          = ( isset( $post['mt_close'][ $model ] ) ) ? $post['mt_close'][ $model ] : array();
 			$availability   = ( isset( $post['mt_tickets'][ $model ] ) ) ? $post['mt_tickets'][ $model ] : array();
 			$pricing_array  = mt_setup_pricing( $labels, $prices, $availability, $close );
-			$pricing_array  = apply_filters('naiop_setup_pricing', $pricing_array, $post, $model);
+			$pricing_array  = apply_filters('naiop_setup_pricing', null, $pricing_array, $post, $model);
 
 			$defaults[ $model ]            = $model_defaults;
 			$defaults[ $model ]['pricing'] = $pricing_array;

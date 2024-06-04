@@ -515,7 +515,7 @@ function mt_prices_table( $registration = array(), $counting = '' ) {
 					</td>
 					<td>$label_field<input type='$type' class='$label_class' name='mt_label$pattern' id='mt_label_$counting" . '_' . "$label' value='" . esc_attr( stripslashes( strip_tags( $options['label'] ) ) ) . "' />$comps</td>
 					<td><input type='number' name='mt_price$pattern' step='0.01' id='mt_price_$counting" . '_' . "$label' value='" . esc_attr( $options['price'] ) . "' size='8' /></td>
-					<td>" . apply_filters('naiop_ticket_seats', $pattern, $counting, $label, $options) . "</td>
+					<td>" . apply_filters('naiop_ticket_custom_fields', $pattern, $counting, $label, $options) . "</td>
 					<td>$available</td>
 					<td><input type='hidden' name='mt_sold$pattern' value='" . $sold . "' />" . $sold . '</td>
 					<td>' . $close_field . '</td>
@@ -540,7 +540,7 @@ function mt_prices_table( $registration = array(), $counting = '' ) {
 					</td>
 					<td><input type='text' readonly name='mt_label$pattern' id='mt_label_$counting" . '_' . "complimentary' value='Complimentary' /><br />" . __( 'Note: complimentary tickets can only be added by logged-in administrators.', 'my-tickets' ) . "</td>
 					<td><input type='text' readonly name='mt_price$pattern' id='mt_price_$counting" . '_' . "complimentary' value='0' size='8' /></td>
-					<td>" . apply_filters('naiop_ticket_seats', $pattern, $counting, 'complimentary', array()) . "</td>
+					<td>" . apply_filters('naiop_ticket_custom_fields', $pattern, $counting, 'complimentary', array()) . "</td>
 					<td>$available</td>
 					<td></td>
 					<td></td>
@@ -560,7 +560,7 @@ function mt_prices_table( $registration = array(), $counting = '' ) {
 			<td></td>
 			<td>$new_label_field<input type='text' class='$label_class' name='mt_label$pattern' id='mt_$counting" . '_' . "label' /></td>
 			<td><input type='text' name='mt_price$pattern' id='mt_$counting" . '_' . "price' step='0.01' size='8' /></td>
-			<td>" . apply_filters('naiop_ticketing_new_price_seats', $pattern, $counting) . "</td>
+			<td>" . apply_filters('naiop_ticketing_new_price_custom_fields', $pattern, $counting) . "</td>
 			<td>$available_empty</td>
 			<td></td>
 			<td>" . $new_close_field . '</td>
@@ -652,7 +652,7 @@ function mt_save_registration_data( $post_id, $post, $data = array(), $event_id 
 		$availability    = ( isset( $post['mt_tickets'] ) ) ? $post['mt_tickets'] : 'inherit';
 		$total_tickets   = ( isset( $post['mt_tickets_total'] ) ) ? $post['mt_tickets_total'] : 'inherit';
 		$pricing_array   = mt_setup_pricing( $labels, $prices, $availability, $close, $sold, $times );
-		$pricing_array   = apply_filters('naiop_setup_pricing', $pricing_array, $post, null, $sold, $times);
+		$pricing_array   = apply_filters('naiop_setup_pricing', $post_id, $pricing_array, $post, null, $sold, $times);
 		$reg_expires     = ( isset( $post['reg_expires'] ) ) ? (int) $post['reg_expires'] : 0;
 		$multiple        = ( isset( $post['mt_multiple'] ) ) ? 'true' : 'false';
 		$mt_sales_type   = ( isset( $post['mt_sales_type'] ) ) ? $post['mt_sales_type'] : 'tickets';
