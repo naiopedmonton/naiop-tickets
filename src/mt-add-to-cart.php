@@ -534,6 +534,13 @@ function mt_ticket_row( $event_id, $registration, $ticket_type, $type, $availabl
 				$remaining,
 				$available
 			);
+			$form          .= apply_filters(
+				'naiop_custom_cart_inputs',
+				'',
+				$type,
+				$event_id,
+				$registration
+			);
 			$form          .= $post_price . "<span class='mt-error-notice' aria-live='assertive'></span></div>";
 		}
 		$has_tickets = true;

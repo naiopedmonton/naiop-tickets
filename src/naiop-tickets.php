@@ -31,18 +31,24 @@ function naiop_ticketing_settings_fields($html, $options) {
 	return $input;
 }
 
-/*add_filter( 'mt_add_to_cart_input', 'add_to_cart_input', 10, 8 );
-function add_to_cart_input($html, $input_type, $type, $value, $attributes, $unknown, $remaining, $available) {
+/* add product id to the ticket row */
+add_filter( 'naiop_custom_cart_inputs', 'add_to_cart_input', 10, 4 );
+function add_to_cart_input($html, $type, $event_id, $registration) {
 	if ( $type === 'complimentary' ) {
 		return "";
 	}
-	return $html;
-}*/
 
-add_filter( 'naiop_ticket_row', 'filter_ticket_rows', 10, 2 );
+	$product_id = "";
+	if ( isset( $registration['prices'] ) && isset( $registration['prices'][$type] ) && isset( $registration['prices'][$type]['product_id'] ) ) {
+		$product_id = $registration['prices'][$type]['product_id'];
+	}
+
+	return "<input type='hidden' name='naiop_product_id[$type]' id='naiop_product_id_$type" . '_' . "$event_id' value='$product_id' />";
+}
+
+add_filter( 'naiop_ticket_row', 'filter_ticket_rows', 10, 4 );
 function filter_ticket_rows($html, $type) {
 	if ( $type === 'complimentary' ) {
-		
 		return false;
 	}
 	return $html;
@@ -119,11 +125,23 @@ function naiop_ajax_handler() {
 				}
 			}
 		}
+		
 		$submit = $data;
-
-		$product_id = $submit['naiop_product_id'];
-		if ( $product_id ) {
-			WC()->cart->add_to_cart( $product_id );
+		if ( isset( $submit['mt_tickets'] ) && isset( $submit['naiop_product_id'] ) ) {
+			foreach ($submit['mt_tickets'] as $ticket_id => $reg_info) {
+				if ( !is_numeric($reg_info) || ((int)$reg_info) <= 0) {
+					continue;
+				}
+				$product_id = "";
+				if ( isset( $submit['naiop_product_id'][$ticket_id] ) && $submit['naiop_product_id'][$ticket_id] !== '' ) {
+					$product_id = $submit['naiop_product_id'][$ticket_id];
+				}
+				if ( $product_id ) {
+					WC()->cart->add_to_cart($product_id, $reg_info, 0, array(), array());
+				} else {
+					error_log("Failed to find product_id for ticket add-to-cart request: " . $ticket_id);
+				}
+			}
 		}
 
 		$response = apply_filters( 'mt_ajax_updated_success', sprintf( __( "Your cart is updated. <a href='%s'>Checkout</a>", 'my-tickets' ), "" ) );
@@ -212,6 +230,12 @@ function naiop_total_tickets_label($default) {
 /* save ticketing (with seats) */
 add_filter('naiop_setup_pricing', 'naiop_setup_pricing', 10, 6);
 function naiop_setup_pricing($post_id, $pricing_array, $post, $model, $sold = array(), $times = array()) {
+	$event_category = "Events";
+	if (function_exists('mt_get_settings')) {
+		$options  = mt_get_settings();
+		$event_category = $options['naiop_ticket_cat'];
+	}
+
 	if (!is_null($model)) { //ticket settings
 		$labels         = ( isset( $post['mt_label'][ $model ] ) ) ? $post['mt_label'][ $model ] : array();
 		$prices         = ( isset( $post['mt_price'][ $model ] ) ) ? $post['mt_price'][ $model ] : array();
@@ -275,6 +299,7 @@ function naiop_setup_pricing($post_id, $pricing_array, $post, $model, $sold = ar
 					$product->set_short_description($event_excerpt);
 					$product->set_catalog_visibility('hidden');
 					$product->set_regular_price($price);
+					$product->set_category_ids( [ $event_category ] );
 					if ($attachment_id) {
 						$product->set_image_id($attachment_id);
 					}
@@ -291,6 +316,7 @@ function naiop_setup_pricing($post_id, $pricing_array, $post, $model, $sold = ar
 						$product->set_short_description($event_excerpt);
 						$product->set_catalog_visibility('hidden');
 						$product->set_regular_price($price);
+						$product->set_category_ids( [ $event_category ] );
 						if ($attachment_id) {
 							$product->set_image_id($attachment_id);
 						}
@@ -317,8 +343,16 @@ function naiop_setup_pricing($post_id, $pricing_array, $post, $model, $sold = ar
 			++$i;
 		}
 	}
-	error_log("TODO delete orphaned products: " . print_r($product_to_delete, true));
+	if (count($product_to_delete) > 0) {
+		error_log("TODO delete orphaned products: " . print_r($product_to_delete, true));
+	}
 
 	return $return;
+}
+
+add_action( 'mc_delete_event', 'naiop_delete_event_handler', 10, 2 );
+function naiop_delete_event_handler($event_id, $post_id) {
+	// TODO: delete Products associated with it
+	error_log("TODO: delete Products associated with " . $event_id);
 }
 
