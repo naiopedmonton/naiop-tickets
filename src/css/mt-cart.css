@@ -501,3 +501,11 @@ only screen and (max-width: 760px),
     .mt_cart td:nth-of-type(1):before { content: "Order"; }
     .mt_cart td:nth-of-type(2):before { content: "Update"; }
 }
+
+.mt-ticket-field.naiop-ticket-field {
+    grid-template-columns: 1fr 5em 1fr 5em;
+}
+.mt-ticket-field.naiop-ticket-field span.naiop-ticket-seats {
+    font-size: 0.75rem;
+    color: rgba(0,0,0,0.6);
+}

@@ -39,11 +39,22 @@ function add_to_cart_input($html, $type, $event_id, $registration) {
 	}
 
 	$product_id = "";
-	if ( isset( $registration['prices'] ) && isset( $registration['prices'][$type] ) && isset( $registration['prices'][$type]['product_id'] ) ) {
-		$product_id = $registration['prices'][$type]['product_id'];
+	$seats = "1";
+	if ( isset( $registration['prices'] ) && isset( $registration['prices'][$type] ) ) {
+		if ( isset( $registration['prices'][$type]['product_id'] ) ) {
+			$product_id = $registration['prices'][$type]['product_id'];
+		}
+		if ( isset( $registration['prices'][$type]['seats'] ) ) {
+			$seats = $registration['prices'][$type]['seats'];
+		}
 	}
+	
+	$return = "<div class='naiop-ticket-field-custom'>";
+		$return .= "<input type='hidden' name='naiop_product_id[$type]' id='naiop_product_id_$type" . '_' . "$event_id' value='$product_id' />";
+		$return .= "<span class='naiop-ticket-seats'>Seats " . $seats . "</span>";
+	$return .= "</div>";
 
-	return "<input type='hidden' name='naiop_product_id[$type]' id='naiop_product_id_$type" . '_' . "$event_id' value='$product_id' />";
+	return $return;
 }
 
 add_filter( 'naiop_ticket_row', 'filter_ticket_rows', 10, 4 );
@@ -125,7 +136,7 @@ function naiop_ajax_handler() {
 				}
 			}
 		}
-		
+
 		$submit = $data;
 		if ( isset( $submit['mt_tickets'] ) && isset( $submit['naiop_product_id'] ) ) {
 			foreach ($submit['mt_tickets'] as $ticket_id => $reg_info) {

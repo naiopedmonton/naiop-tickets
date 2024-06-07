@@ -522,7 +522,14 @@ function mt_ticket_row( $event_id, $registration, $ticket_type, $type, $availabl
 			$price          = "<span id='mt_tickets_data_$type'>$ticket_price_label</span>";
 			$label_price    = ( $price_in_label ) ? ' <span class="mt-label-price">' . strip_tags( $price ) . '</span>' : '';
 			$post_price     = ( ! $price_in_label ) ? $price : '';
-			$form          .= "<div class='mt-ticket-field mt-ticket-$type $class $price_class'><label for='mt_tickets_$type" . '_' . "$event_id' id='mt_tickets_label_$type" . '_' . "$event_id'>" . esc_attr( $ticket_type['label'] ) . $extra_label . $label_price . '</label>';
+			$form          .= "<div class='mt-ticket-field naiop-ticket-field mt-ticket-$type $class $price_class'><label for='mt_tickets_$type" . '_' . "$event_id' id='mt_tickets_label_$type" . '_' . "$event_id'>" . esc_attr( $ticket_type['label'] ) . $extra_label . $label_price . '</label>';
+			$form          .= apply_filters(
+				'naiop_custom_cart_inputs',
+				'',
+				$type,
+				$event_id,
+				$registration
+			);
 			$form          .= apply_filters(
 				'mt_add_to_cart_input',
 				"<div class='mt-ticket-input'><input type='$input_type' name='mt_tickets[$type]' $attributes id='mt_tickets_$type" . '_' . "$event_id' class='tickets_field' value='$value' aria-labelledby='mt_tickets_label_$type" . '_' . $event_id . " mt_tickets_data_$type' />$button_up$button_down</div>",
@@ -533,13 +540,6 @@ function mt_ticket_row( $event_id, $registration, $ticket_type, $type, $availabl
 				'',
 				$remaining,
 				$available
-			);
-			$form          .= apply_filters(
-				'naiop_custom_cart_inputs',
-				'',
-				$type,
-				$event_id,
-				$registration
 			);
 			$form          .= $post_price . "<span class='mt-error-notice' aria-live='assertive'></span></div>";
 		}
