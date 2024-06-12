@@ -339,6 +339,9 @@ function naiop_setup_pricing($post_id, $pricing_array, $post, $model, $sold = ar
 					}
 					$product->save();
 					$product_id = $product->get_id();
+
+					// post meta seats
+					update_post_meta( $product_id, "naiop_seats", $seat_count );
 				} else if ( $product_id !== '' ) { // existing product
 					$product = wc_get_product($product_id);
 					if ($product) {
@@ -355,6 +358,12 @@ function naiop_setup_pricing($post_id, $pricing_array, $post, $model, $sold = ar
 							$product->set_image_id($attachment_id);
 						}
 						$product->save();
+
+						// post meta seats
+						$meta_seats = get_post_meta( $product_id, "naiop_seats", true );
+						if ( is_numeric($meta_seats) && ((int)$meta_seats) != $seat_count ) {
+							update_post_meta( $product_id, "naiop_seats", $seat_count );
+						}
 					} else {
 						// TODO: create a new Product?
 						error_log("Failed to find Product for POST value: " . $product_id);
