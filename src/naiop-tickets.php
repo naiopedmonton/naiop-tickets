@@ -32,8 +32,8 @@ function naiop_ticketing_settings_fields($html, $options) {
 }
 
 /* add product id to the ticket row */
-add_filter( 'naiop_custom_cart_inputs', 'add_to_cart_input', 10, 4 );
-function add_to_cart_input($html, $type, $event_id, $registration) {
+add_filter( 'naiop_custom_cart_inputs', 'naiop_custom_cart_inputs', 10, 4 );
+function naiop_custom_cart_inputs($html, $type, $event_id, $registration) {
 	if ( $type === 'complimentary' ) {
 		return "";
 	}
@@ -54,6 +54,29 @@ function add_to_cart_input($html, $type, $event_id, $registration) {
 		$return .= "<span class='naiop-ticket-seats'>Seats " . $seats . "</span>";
 	$return .= "</div>";
 
+	return $return;
+}
+
+/* cart quantity input - adjust min/max accounting for seats */
+add_filter( 'naiop_add_to_cart_input', 'naiop_add_to_cart_input', 10, 10 );
+function naiop_add_to_cart_input($html, $input_type, $type, $value, $disable, $seats_remaining, $event_id, $button_up, $button_down, $ticket_settings) {
+	$seats = 1;
+	if ( !is_null($ticket_settings) && isset($ticket_settings['seats']) && is_numeric($ticket_settings['seats']) ) {
+		$seats = (int) $ticket_settings['seats'];
+	}
+	$remaining = $seats_remaining;
+	if ($seats) {
+		$remaining = (int) ($seats_remaining / $seats);
+	}
+	$attributes = " min='0' max='$remaining'";
+	if ( 0 === $remaining ) {
+		$attributes .= ' readonly="readonly"';
+		$class       = 'mt-sold-out';
+	}
+
+	$return = "<div class='mt-ticket-input'>";
+		$return .= "<input type='$input_type' name='mt_tickets[$type]' id='mt_tickets_$type" . '_' . "$event_id' class='tickets_field' value='$value' $attributes aria-labelledby='mt_tickets_label_$type" . '_' . $event_id . " mt_tickets_data_$type'$disable />$button_up$button_down";
+	$return .= "</div>";
 	return $return;
 }
 

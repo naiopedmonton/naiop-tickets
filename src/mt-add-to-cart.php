@@ -531,15 +531,17 @@ function mt_ticket_row( $event_id, $registration, $ticket_type, $type, $availabl
 				$registration
 			);
 			$form          .= apply_filters(
-				'mt_add_to_cart_input',
+				'naiop_add_to_cart_input',
 				"<div class='mt-ticket-input'><input type='$input_type' name='mt_tickets[$type]' $attributes id='mt_tickets_$type" . '_' . "$event_id' class='tickets_field' value='$value' aria-labelledby='mt_tickets_label_$type" . '_' . $event_id . " mt_tickets_data_$type' />$button_up$button_down</div>",
 				$input_type,
 				$type,
 				$value,
-				$attributes,
 				'',
 				$remaining,
-				$available
+				$event_id,
+				$button_up,
+				$button_down,
+				$ticket_type
 			);
 			$form          .= $post_price . "<span class='mt-error-notice' aria-live='assertive'></span></div>";
 		}
